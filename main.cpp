@@ -16,7 +16,7 @@ int main() {
     // std::cout<< A.block<3,1>(0,0) << std::endl; //output: 1,5,9
     // std::cout<< A.block<3,1>(0,1) << std::endl; //output: 2,6,10
 
-    usv v_d = power_method_with_deflation(A, 0, 0.00001);
+    usv v_d = power_method_with_deflation(A, 0, 0.0000001);
 
     std::cout<<"U: "<< std::endl << v_d.U << std::endl;
     std::cout<<"S: "<< std::endl << v_d.S << std::endl;

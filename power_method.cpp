@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <Eigen/Dense>
-#include <vector>
 #include <math.h>
 #include <cstdlib>
 #include "power_method.h"
