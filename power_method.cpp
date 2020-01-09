@@ -47,12 +47,14 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
     while (true)
     {
 
+
+
         Mv = M_U * v;
         v_new = Mv/ Mv.norm();
 
         ev_new = eigen_value(M_U, v_new);
 
-        if (std::abs(ev_new - ev) < eigen_acurracy){
+        if (std::abs(ev_new - ev) < eigen_acurracy || i > 999 ){
             break;
         };
 
@@ -61,6 +63,7 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
         ++i;
     };
 
+    std::cout << "iteration to find eigen values: " << i << std::endl;
     eigen_pair e;
     e.eigen_vector = v_new;
     e.eigen_value = ev_new;
