@@ -58,7 +58,6 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
 
         v = v_new;
         ev = ev_new;
-        //std::cout<<i <<"th iteration: " <<ev_new << std::endl;
         ++i;
     };
 
@@ -70,9 +69,6 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
 
 usv power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurracy){
 
-
-// TODO: Further refactor of the code
-// TODO: Vectorization of the code
 
     const int M_col_size = M.cols();
     const int M_row_size = M.rows();
