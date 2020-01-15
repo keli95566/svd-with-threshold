@@ -13,9 +13,38 @@ using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
 
+usv_native eigne_to_native(usv const &eigen_mat){
+    usv_native res;
+//    std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>> U_n;
+    std::vector<std::vector<double>> U_n;
+    std::vector<std::vector<double>> V_n;
+
+    for(int i = 0; i < eigen_mat.U.size(); i++){
+        VectorXf e_vec = eigen_mat.U.at(i);
+        std::vector<double> vec(e_vec.data(),
+                e_vec.data() + e_vec.rows() * e_vec.cols());
+        U_n.push_back(vec);
+    }
+
+
+    for(int j = 0; j < eigen_mat.V.size(); j++){
+        VectorXf e_vec2 = eigen_mat.V.at(j);
+        std::vector<double> vec2(e_vec2.data(),
+                e_vec2.data() + e_vec2.rows()*e_vec2.cols());
+        V_n.push_back(vec2);
+    }
+
+    res.U_n = U_n;
+    res.S_n = eigen_mat.S;
+    res.V_n = V_n;
+
+    return res;
+
+}
+
 // compute the eigen value of from the matrix and the eigen vector
 // formula: v*(Av)^T/(v_T*v)
-float eigen_value(MatrixXf A, VectorXf v){
+float compute_eigen_value(MatrixXf A, VectorXf v){
 
     int M_col_size = A.cols();
     VectorXf x(M_col_size);
@@ -40,7 +69,7 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
     // v = v_0/n;
     v = v_0;
 
-    float ev = eigen_value(M_U,v);
+    float ev = compute_eigen_value(M_U,v);
     float ev_new;
 
     VectorXf v_new(M_col_size);
@@ -55,7 +84,7 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
         Mv = M_U * v;
         v_new = Mv/ Mv.norm();
 
-        ev_new = eigen_value(M_U, v_new);
+        ev_new = compute_eigen_value(M_U, v_new);
 
         if (std::abs(ev_new - ev) < eigen_acurracy || i > 999 ){
             break;
@@ -72,7 +101,7 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
     return e;
 }
 
-usv power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurracy){
+usv_native power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurracy){
 
 
     const int M_col_size = M.cols();
@@ -122,7 +151,8 @@ usv power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurr
     res.S = res_s;
     res.V = res_v;
 
-    return res;
+    usv_native res_f = eigne_to_native(res);
+    return res_f;
 
 }
 
