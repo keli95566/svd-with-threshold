@@ -1,6 +1,8 @@
+
 #ifndef POWER_H
 #define POWER_H
 #include <Eigen/Dense>
+#include <vector>
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
@@ -12,9 +14,9 @@ struct eigen_pair{
 };
 
 struct usv{
-    MatrixXf U;
-    VectorXf S;
-    MatrixXf V;
+    std::vector<VectorXf> U;
+    std::vector<double> S;
+    std::vector<VectorXf> V;
 };
 
 eigen_pair power_method_single_value(MatrixXf M, double eigen_acurracy);

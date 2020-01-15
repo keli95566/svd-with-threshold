@@ -6,6 +6,7 @@
 #include <Eigen/Dense>
 #include <math.h>
 #include <cstdlib>
+#include <vector>
 #include "power_method.h"
 
 using Eigen::MatrixXf;
@@ -22,6 +23,8 @@ float eigen_value(MatrixXf A, VectorXf v){
     return v.dot(x);
 
 }
+
+
 eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
 
     int M_col_size = M_U.cols();
@@ -32,9 +35,9 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
         v_0(j) = j;
     }
 
-   // float n = std::sqrt(M_col_size);
+    // float n = std::sqrt(M_col_size);
     VectorXf v(M_col_size);
-   // v = v_0/n;
+    // v = v_0/n;
     v = v_0;
 
     float ev = eigen_value(M_U,v);
@@ -63,7 +66,6 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
         ++i;
     };
 
-    std::cout << "iteration to find eigen values: " << i << std::endl;
     eigen_pair e;
     e.eigen_vector = v_new;
     e.eigen_value = ev_new;
@@ -77,9 +79,9 @@ usv power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurr
     const int M_row_size = M.rows();
 
     usv res;
-    MatrixXf U(M_row_size, M_row_size);
-    MatrixXf V(M_col_size, M_col_size);
-    VectorXf S(M_row_size);
+    std::vector<VectorXf> res_u;
+    std::vector<double> res_s;
+    std::vector<VectorXf> res_v;
 
     MatrixXf M_T(M_col_size,M_row_size);
     MatrixXf M_U(M_row_size,M_col_size);
@@ -93,13 +95,17 @@ usv power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurr
         eigen_pair ui = power_method_single_value(M_U,eigen_acurracy);
         float sigma = std::sqrt(ui.eigen_value);
 
-        S(i-1) = sigma;
-        U.block(0,i-1,M_row_size,1) = ui.eigen_vector;
+        if (sigma > threshold) {
 
-        // Compute U from V: ui*sigma = M*vi
-        VectorXf vi(M_col_size);
-        vi = (1/sigma)*M_T*ui.eigen_vector;
-        V.block(i-1,0, 1, M_col_size) = vi.transpose();
+            res_s.push_back(sigma);
+            res_u.push_back(ui.eigen_vector);
+
+            // Compute U from V: ui*sigma = M*vi
+            VectorXf vi(M_col_size);
+            vi = (1/sigma)*M_T*ui.eigen_vector;
+            res_v.push_back(vi.transpose());
+
+        }
 
 
         if (sigma < threshold or ui.eigen_value < eigen_acurracy){
@@ -112,9 +118,9 @@ usv power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurr
     }
 
 
-    res.U = U;
-    res.S = S;
-    res.V = V;
+    res.U = res_u;
+    res.S = res_s;
+    res.V = res_v;
 
     return res;
 

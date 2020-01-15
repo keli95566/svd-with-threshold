@@ -1,9 +1,40 @@
 #include <iostream>
+#include <vector>
 #include "power_method.h"
 #include <Eigen/Dense>
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
+
+void print_vector(std::vector<double> const &input){
+
+    for(int i = 0 ; i < input.size() ; i ++) {
+        std::cout << input.at(i) << " ";
+    }
+    std::cout<< "\n" << "";
+
+}
+
+void print_matrix(std::vector<VectorXf> const &input){
+    for (int i = 0; i< input.size() ; i ++ ){
+        std::cout << input.at(i) << std::endl;
+    }
+}
+
+void print_result(usv res){
+
+    std::cout << "Found " << res.S.size() << "eigen values under threshold" << std::endl;
+    print_vector(res.S);
+
+
+
+    std::cout << "U : "<< std::endl;
+    print_matrix(res.U);
+
+    std::cout << "V : " << std::endl;
+    print_matrix(res.V);
+
+}
 
 int main() {
 
@@ -16,14 +47,11 @@ int main() {
     // std::cout<< A.block<3,1>(0,0) << std::endl; //output: 1,5,9
     // std::cout<< A.block<3,1>(0,1) << std::endl; //output: 2,6,10
 
-    usv v_d = power_method_with_deflation(A, 2, 0);
+    usv res = power_method_with_deflation(A, 1, 0);
+    print_result(res);
 
 // TODO: restrict loop literation in case acurracy is 0
 // TODO: test the result to see if it combines to the original array
 // TODO: return a value that outputs how many eigen values is found in total.
-// TODO:
 
-    std::cout<<"U: "<< std::endl << v_d.U << std::endl;
-    std::cout<<"S: "<< std::endl << v_d.S << std::endl;
-    std::cout<<"V: "<< std::endl << v_d.V << std::endl;
 }
