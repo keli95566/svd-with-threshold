@@ -42,6 +42,18 @@ usv_native eigne_to_native(usv const &eigen_mat){
 
 }
 
+MatrixXf native_to_eigen_mat(double* A, int row, int col){
+
+    MatrixXf A_e(row, col);
+    for(int i = 0; i < row; i++){
+        for(int j = 0; j < col; j++){
+            A_e(i, j) = A[i*col + j] ;
+        }
+    }
+
+    return A_e;
+}
+
 // compute the eigen value of from the matrix and the eigen vector
 // formula: v*(Av)^T/(v_T*v)
 float compute_eigen_value(MatrixXf A, VectorXf v){
@@ -101,11 +113,18 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
     return e;
 }
 
-usv_native power_method_with_deflation(MatrixXf M, double threshold, double eigen_acurracy){
+usv_native power_method_with_deflation(double* A, int row, int col, double threshold, double eigen_acurracy){
 
 
+    MatrixXf M = native_to_eigen_mat(A, row, col);
+
+    // TODO: refractor
     const int M_col_size = M.cols();
     const int M_row_size = M.rows();
+
+    //std::cout << M_col_size << std::endl;
+    //std::cout<< M_row_size << std::endl;
+    //std::cout << M << std::endl;
 
     usv res;
     std::vector<VectorXf> res_u;
@@ -147,6 +166,7 @@ usv_native power_method_with_deflation(MatrixXf M, double threshold, double eige
     }
 
 
+    std::cout << "transposed u : "<< std::endl;
     res.U = res_u;
     res.S = res_s;
     res.V = res_v;
