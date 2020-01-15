@@ -13,7 +13,7 @@ using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
 
-usv_native eigne_to_native(usv const &eigen_mat){
+usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
     usv_native res;
 //    std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>> U_n;
     std::vector<std::vector<double>> U_n;
@@ -37,6 +37,10 @@ usv_native eigne_to_native(usv const &eigen_mat){
     res.U_n = U_n;
     res.S_n = eigen_mat.S;
     res.V_n = V_n;
+    res.num_eign = eigen_mat.S.size();
+    res.row = row;
+    res.col = col;
+
 
     return res;
 
@@ -171,7 +175,7 @@ usv_native power_method_with_deflation(double* A, int row, int col, double thres
     res.S = res_s;
     res.V = res_v;
 
-    usv_native res_f = eigne_to_native(res);
+    usv_native res_f = eigne_to_native(res, row, col);
     return res_f;
 
 }

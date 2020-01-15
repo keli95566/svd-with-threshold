@@ -23,6 +23,9 @@ struct usv_native{
     std::vector<std::vector<double>> U_n;
     std::vector<double> S_n;
     std::vector<std::vector<double>> V_n;
+    int num_eign;
+    int row;
+    int col;
 };
 
 eigen_pair power_method_single_value(MatrixXf M, double eigen_acurracy);

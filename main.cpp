@@ -30,7 +30,8 @@ void print_matrix(std::vector<std::vector<double>> const &input){
 
 void print_result(usv_native res){
 
-    std::cout << "Found " << res.S_n.size() << " eigen values above threshold" << std::endl;
+    std::cout << "Found " << res.num_eign << " eigen values above threshold" << std::endl;
+
     print_vector(res.S_n);
 
     std::cout << "U : "<< std::endl;
