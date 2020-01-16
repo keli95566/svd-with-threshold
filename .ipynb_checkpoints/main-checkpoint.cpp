@@ -6,28 +6,39 @@ using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
 
-void print_matrix(double* A, int row, int col){
+void print_vector(std::vector<double> const &input){
 
-    for(int i = 0; i < row; i++){
-        for(int j = 0; j< col; j++){
-            std::cout << A[i*col + j] << "  " << std::endl;
-        }
-        std::cout << "\n" ;
+    for(int i = 0 ; i < input.size() ; i ++) {
+        std::cout << input.at(i) << " ";
     }
+    std::cout<< "\n" << "";
+
 }
 
+// TODO: Now printing with strided access, will be slow, find a way to fix it.
+
+// TODO: U needs to be transposed.
+
+void print_matrix(std::vector<std::vector<double>> const &input){
+    for (int i = 0; i< input.size() ; i ++ ){
+        for (int j = 0 ; j < input.at(i).size(); j++){
+            std::cout << input.at(i).at(j)<< ' ';
+        }
+        std::cout<< "\n" ;
+    }
+}
 
 void print_result(usv_native res){
 
     std::cout << "Found " << res.num_eign << " eigen values above threshold" << std::endl;
 
-    print_matrix(res.S, 1, res.num_eign);
+    print_vector(res.S_n);
 
     std::cout << "U : "<< std::endl;
-    print_matrix(res.U, res.row, res.num_eign);
+    print_matrix(res.U_n);
 
     std::cout << "V : " << std::endl;
-    print_matrix(res.V, res.num_eign, res.col);
+    print_matrix(res.V_n);
 
 }
 
@@ -43,7 +54,7 @@ int main() {
     // std::cout<< A.block<3,1>(0,0) << std::endl; //output: 1,5,9
     // std::cout<< A.block<3,1>(0,1) << std::endl; //output: 2,6,10
 
-    usv_native res = power_method_with_deflation(A, num_row, num_col, 2, 0.001);
+    usv_native res = power_method_with_deflation(A, num_row, num_col, 1, 0);
     print_result(res);
 
 // TODO: handle the threshold = 0 case, it won't stop calculation.

@@ -12,32 +12,60 @@
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
+struct eigen_pair{
+    VectorXf eigen_vector;
+    float eigen_value;
+};
+
+struct usv{
+    std::vector<VectorXf> U;
+    std::vector<double> S;
+    std::vector<VectorXf> V;
+};
+
+void free_svd_result(usv_native* r){
+
+    free(const_cast<double *>(r->U));
+    free(const_cast<double *>(r->S));
+    free(const_cast<double *>(r->V));
+    free( &r->num_eign);
+    free( &r->row);
+    free( &r->col);
+}
 
 usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
     usv_native res;
-//    std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>> U_n;
-    std::vector<std::vector<double>> U_n;
-    std::vector<std::vector<double>> V_n;
 
-    for(int i = 0; i < eigen_mat.U.size(); i++){
-        VectorXf e_vec = eigen_mat.U.at(i);
-        std::vector<double> vec(e_vec.data(),
-                e_vec.data() + e_vec.rows() * e_vec.cols());
-        U_n.push_back(vec);
+    // TODO: add a free memory function
+    int num_eigen = eigen_mat.S.size();
+    double* u = (double*)malloc(row*num_eigen* sizeof(double));
+    double* v = (double*)malloc(num_eigen*col* sizeof(double));
+    double* s = (double*)malloc(num_eigen* sizeof(double));
+
+
+    for(int i = 0; i< num_eigen; i++){
+
+        s[i] = eigen_mat.S.at(i);
+    }
+
+    for(int i =0; i < num_eigen; i++){
+        for(int j=0; j< row; j++){
+            u[i*num_eigen + j] = eigen_mat.U.at(i)(j);
+        }
+    }
+
+    for(int i = 0; i < num_eigen; i ++) {
+        for(int j = 0; j< col; j++) {
+
+            v[i*col +j] = eigen_mat.V.at(i)(j);
+        }
     }
 
 
-    for(int j = 0; j < eigen_mat.V.size(); j++){
-        VectorXf e_vec2 = eigen_mat.V.at(j);
-        std::vector<double> vec2(e_vec2.data(),
-                e_vec2.data() + e_vec2.rows()*e_vec2.cols());
-        V_n.push_back(vec2);
-    }
-
-    res.U_n = U_n;
-    res.S_n = eigen_mat.S;
-    res.V_n = V_n;
-    res.num_eign = eigen_mat.S.size();
+    res.U = u;
+    res.S = s;
+    res.V = v;
+    res.num_eign = num_eigen;
     res.row = row;
     res.col = col;
 
@@ -170,7 +198,6 @@ usv_native power_method_with_deflation(double* A, int row, int col, double thres
     }
 
 
-    std::cout << "transposed u : "<< std::endl;
     res.U = res_u;
     res.S = res_s;
     res.V = res_v;
