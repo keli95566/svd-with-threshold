@@ -24,19 +24,18 @@ cdef extern from "power_method.h":
 
 def compute_svd(double[:,::1] A, double threshold, double eigen_acurracy ):
     
-    cdef usv_native res;
-    res = power_method_with_deflation(&A[0,0], A.shape[0], A.shape[1], threshold, eigen_acurracy)
+    cdef usv_native res = power_method_with_deflation(&A[0,0], A.shape[0], A.shape[1], threshold, eigen_acurracy)
     
-    # cdef int row = res[0].row , num_eigen = res[0].num_eigen , col = res[0].col
+    cdef int row = res.row , num_eign = res.num_eign , col = res.col
     
-    # U  = np.empty(shape=(num_eigen, row), dtype = np.double)
-    # s  = np.empty(shape=(num_eigen), dtype = np.double)
-    # VT = np.empty(shape=(num_eigen,  col), dtype = np.double)
+    U  = np.empty(shape=(num_eign, row), dtype = np.double)
+    s  = np.empty(shape=(num_eign), dtype = np.double)
+    VT = np.empty(shape=(num_eign,  col), dtype = np.double)
     
-    # if(k > 0):
-    #     U[:,:] = <double[:num_eigen, :row]> res[0].U_n
-    #     s[:] = <double[:num_eigen]> res[0].S_n
-    #     VT[:,:] = <double[:num_eigen, :col]> res[0].V_n
-    a = np.arange(1,16).reshape(3,5)
-    return a, a, a
+    if( num_eign > 0):
+        U[:,:] = <double[:num_eign, :row]> res.U
+        s[:] = <double[:num_eign]> res.S
+        VT[:,:] = <double[:num_eign, :col]> res.V
+
+    return U, s, VT
 

@@ -8,5 +8,5 @@ setup(
     ext_modules=cythonize("partial_svd.pyx",
                           include_path=[
                               numpy.get_include(),
-                              "/usr/local/include"]),
+                              "/usr/include/eigen3/Eigen"]),
 )
