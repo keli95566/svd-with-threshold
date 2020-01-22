@@ -33,7 +33,7 @@ void free_svd_result(usv_native* r){
     free( &r->col);
 }
 
-usv_native* eigne_to_native(usv const &eigen_mat, int row, int col){
+usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
 
     // TODO: add a free memory function
     int num_eigen = eigen_mat.S.size();
@@ -60,16 +60,17 @@ usv_native* eigne_to_native(usv const &eigen_mat, int row, int col){
         }
     }
 
+    usv_native res;
 
-    // res.U = u;
-    // res.S = s;
-    // res.V = v;
-    // res.num_eign = num_eigen;
-    // res.row = row;
-    // res.col = col;
+    res.U = u;
+    res.S = s;
+    res.V = v;
+    res.num_eign = num_eigen;
+    res.row = row;
+    res.col = col;
 
-
-    return new usv_native = {u,s,v, num_eigen, row, col};
+    return res;
+    //return new usv_native {u,s,v, num_eigen, row, col};
 
 }
 
@@ -144,7 +145,9 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
     return e;
 }
 
-usv_native* power_method_with_deflation(double* A, int row, int col, double threshold, double eigen_acurracy){
+usv_native power_method_with_deflation(double* A, int row,
+                                                int col, double threshold,
+                                                double eigen_acurracy){
 
 
     MatrixXf M = native_to_eigen_mat(A, row, col);
@@ -201,7 +204,7 @@ usv_native* power_method_with_deflation(double* A, int row, int col, double thre
     res.S = res_s;
     res.V = res_v;
 
-    usv_native* res_f = eigne_to_native(res, row, col);
+    usv_native res_f = eigne_to_native(res, row, col);
     return res_f;
 
 }

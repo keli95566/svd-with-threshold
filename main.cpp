@@ -43,7 +43,7 @@ int main() {
     // std::cout<< A.block<3,1>(0,0) << std::endl; //output: 1,5,9
     // std::cout<< A.block<3,1>(0,1) << std::endl; //output: 2,6,10
 
-    usv_native res = power_method_with_deflation(A, num_row, num_col, 2, 0.001);
+    usv_native res = power_method_with_deflation(A, num_row, num_col, 2, 0.00001);
     print_result(res);
 
 // TODO: handle the threshold = 0 case, it won't stop calculation.

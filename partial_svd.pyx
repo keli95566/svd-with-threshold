@@ -1,11 +1,10 @@
+# distutils: sources = power_method.cpp
+# distutils: language = c++
+# cython: language_level = 3
+# cython: boundscheck = False
+# cython: wraparound = False
+
 import numpy as np
-
-#distutils: sources = power_method.cpp
-#distutils: language = c++
-#cython: language_level = 3
-#cython: wraparound = False
-#cython: boundscheck = False
-
 
 cdef extern from "power_method.h":
     struct usv_native:
@@ -17,16 +16,16 @@ cdef extern from "power_method.h":
         int col
         
 
-    #void free_svd_result(struct usv_native* r)
+    #void free_svd_result(usv_native* r)
     
-    usv_native* power_method_with_deflation(double* A, int row, int col, 
+    usv_native power_method_with_deflation(double* A, int row, int col,
                                           double threshold, double eigen_acurracy)
     
 
-def partial_svd(double[:,::1] A, double threshold, double eigen_acurracy ):
+def compute_svd(double[:,::1] A, double threshold, double eigen_acurracy ):
     
-
-    cdef usv_native * res = power_method_with_deflation(&A[0,0], A.shape[0], A.shape[1], threshold, eigen_acurracy)
+    cdef usv_native res;
+    res = power_method_with_deflation(&A[0,0], A.shape[0], A.shape[1], threshold, eigen_acurracy)
     
     # cdef int row = res[0].row , num_eigen = res[0].num_eigen , col = res[0].col
     
