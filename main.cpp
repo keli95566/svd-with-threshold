@@ -24,7 +24,7 @@ void print_result(usv_native res){
     print_matrix(res.S, 1, res.num_eign);
 
     std::cout << "U : "<< std::endl;
-    print_matrix(res.U, res.row, res.num_eign);
+    print_matrix(res.U, res.num_eign, res.row);
 
     std::cout << "V : " << std::endl;
     print_matrix(res.V, res.num_eign, res.col);

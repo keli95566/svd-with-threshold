@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "/usr/include/eigen3/Eigen/Eigen"
+#include "/usr/local/include/eigen3/Eigen/Eigen"
 #include <math.h>
 #include <cstdlib>
 #include <vector>
@@ -23,6 +23,7 @@ struct usv{
     std::vector<VectorXf> V;
 };
 
+// release memory in heap.
 void free_svd_result(usv_native* r){
 
     free(const_cast<double *>(r->U));
@@ -33,13 +34,15 @@ void free_svd_result(usv_native* r){
     free( &r->col);
 }
 
+// wrapper to convert eigen vector to native type and save them in heap.
 usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
 
-    // TODO: add a free memory function
+
     int num_eigen = eigen_mat.S.size();
     double* u = (double*)malloc(row*num_eigen* sizeof(double));
     double* v = (double*)malloc(num_eigen*col* sizeof(double));
     double* s = (double*)malloc(num_eigen* sizeof(double));
+
 
 
     for(int i = 0; i< num_eigen; i++){
@@ -49,7 +52,7 @@ usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
 
     for(int i =0; i < num_eigen; i++){
         for(int j=0; j< row; j++){
-            u[i*num_eigen + j] = eigen_mat.U.at(i)(j);
+            u[i*row + j] = eigen_mat.U.at(i)(j);
         }
     }
 
@@ -74,6 +77,7 @@ usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
 
 }
 
+//  convert native type to eigen
 MatrixXf native_to_eigen_mat(double* A, int row, int col){
 
     MatrixXf A_e(row, col);
@@ -97,11 +101,10 @@ float compute_eigen_value(MatrixXf A, VectorXf v){
 
 }
 
-
+// compute a single eigen value and eigen vector
 eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
 
     int M_col_size = M_U.cols();
-
     // start an initial guess
     VectorXf v_0(M_col_size);
     for(int j=0; j< M_col_size; j++){
@@ -123,25 +126,25 @@ eigen_pair power_method_single_value(MatrixXf M_U, double eigen_acurracy){
     while (true)
     {
 
-
-
         Mv = M_U * v;
         v_new = Mv/ Mv.norm();
 
         ev_new = compute_eigen_value(M_U, v_new);
 
-        if (std::abs(ev_new - ev) < eigen_acurracy || i > 999 ){
+        if (std::abs(ev_new - ev) < eigen_acurracy || i > 9999 ){
             break;
         };
 
         v = v_new;
         ev = ev_new;
         ++i;
+
     };
 
     eigen_pair e;
     e.eigen_vector = v_new;
     e.eigen_value = ev_new;
+
     return e;
 }
 
@@ -152,13 +155,8 @@ usv_native power_method_with_deflation(double* A, int row,
 
     MatrixXf M = native_to_eigen_mat(A, row, col);
 
-    // TODO: refractor
     const int M_col_size = M.cols();
     const int M_row_size = M.rows();
-
-    //std::cout << M_col_size << std::endl;
-    //std::cout<< M_row_size << std::endl;
-    //std::cout << M << std::endl;
 
     usv res;
     std::vector<VectorXf> res_u;
