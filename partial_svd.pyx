@@ -37,6 +37,7 @@ def compute_svd(double[:,::1] A, double threshold, double eigen_acurracy ):
         s[:] = <double[:num_eign]> res.S
         VT[:,:] = <double[:num_eign, :col]> res.V
 
+    free_svd_result(&res)
     U = U_t.transpose();
 
     return U, s, VT

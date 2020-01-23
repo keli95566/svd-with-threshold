@@ -3,7 +3,10 @@
 //
 
 #include <iostream>
-#include "/usr/local/include/eigen3/Eigen/Eigen"
+//#include "/usr/include/eigen3/Eigen/Eigen"
+
+#include <Eigen/Dense>
+
 #include <math.h>
 #include <cstdlib>
 #include <vector>
@@ -26,12 +29,10 @@ struct usv{
 // release memory in heap.
 void free_svd_result(usv_native* r){
 
-    free(const_cast<double *>(r->U));
-    free(const_cast<double *>(r->S));
-    free(const_cast<double *>(r->V));
-    free( &r->num_eign);
-    free( &r->row);
-    free( &r->col);
+    free(r->U);
+    free(r->S);
+    free(r->V);
+
 }
 
 // wrapper to convert eigen vector to native type and save them in heap.

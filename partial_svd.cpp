@@ -2424,7 +2424,7 @@ static PyObject *__pyx_pf_11partial_svd_compute_svd(CYTHON_UNUSED PyObject *__py
  *         s[:] = <double[:num_eign]> res.S
  *         VT[:,:] = <double[:num_eign, :col]> res.V             # <<<<<<<<<<<<<<
  * 
- *     U = U_t.transpose();
+ *     free_svd_result(&res)
  */
     __pyx_t_10 = __pyx_v_res.V;
     if (!__pyx_t_10) {
@@ -2456,11 +2456,20 @@ static PyObject *__pyx_pf_11partial_svd_compute_svd(CYTHON_UNUSED PyObject *__py
   /* "partial_svd.pyx":40
  *         VT[:,:] = <double[:num_eign, :col]> res.V
  * 
+ *     free_svd_result(&res)             # <<<<<<<<<<<<<<
+ *     U = U_t.transpose();
+ * 
+ */
+  free_svd_result((&__pyx_v_res));
+
+  /* "partial_svd.pyx":41
+ * 
+ *     free_svd_result(&res)
  *     U = U_t.transpose();             # <<<<<<<<<<<<<<
  * 
  *     return U, s, VT
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_U_t, __pyx_n_s_transpose); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_U_t, __pyx_n_s_transpose); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_5))) {
@@ -2474,20 +2483,20 @@ static PyObject *__pyx_pf_11partial_svd_compute_svd(CYTHON_UNUSED PyObject *__py
   }
   __pyx_t_8 = (__pyx_t_7) ? __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_t_7) : __Pyx_PyObject_CallNoArg(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
+  if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 41, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_U = __pyx_t_8;
   __pyx_t_8 = 0;
 
-  /* "partial_svd.pyx":42
+  /* "partial_svd.pyx":43
  *     U = U_t.transpose();
  * 
  *     return U, s, VT             # <<<<<<<<<<<<<<
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __pyx_t_8 = PyTuple_New(3); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_INCREF(__pyx_v_U);
   __Pyx_GIVEREF(__pyx_v_U);
