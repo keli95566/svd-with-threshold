@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "power_method.h"
+#include "cylib/power_method.h"
 #include <Eigen/Dense>
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
