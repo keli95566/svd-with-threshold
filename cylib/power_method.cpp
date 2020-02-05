@@ -3,10 +3,7 @@
 //
 
 #include <iostream>
-//#include "/usr/include/eigen3/Eigen/Eigen"
-
-#include <Eigen/Dense>
-
+#include "/usr/local/include/eigen3/Eigen/Eigen"
 #include <math.h>
 #include <cstdlib>
 #include <vector>
@@ -77,7 +74,7 @@ usv_native eigne_to_native(usv const &eigen_mat, int row, int col){
     //return new usv_native {u,s,v, num_eigen, row, col};
 
 }
-
+// TODO: use blocking to better vectorize.
 //  convert native type to eigen
 MatrixXf native_to_eigen_mat(double* A, int row, int col){
 

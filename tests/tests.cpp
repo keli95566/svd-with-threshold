@@ -12,12 +12,17 @@
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
-TEST_CASE("should use power method properly", "[POWER]"){
+TEST_CASE("should use power method properly for basic operations", "[POWER]"){
+
+
+    std::cout << "test finished" << std::endl;
+
+}
+
+TEST_CASE("should halt if threshold is 0", "[EDGE CASE]"){
 
     REQUIRE(true);
     MatrixXf A_U_TEST(3,3);
 
-    A_U_TEST << 30,70,110,70,174,278,110,278,446;
-    std::cout << "test finished" << std::endl;
 
 }

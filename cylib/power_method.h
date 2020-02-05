@@ -16,8 +16,10 @@ struct usv_native {
 // compute a series of eigne values with a threshold using
 // power method and deflation techniques.
 usv_native power_method_with_deflation(
-        double* A, int row, int col,
-        double threshold, double eigen_acurracy);
+           double* A,
+           int row, int col,
+           double threshold,
+           double eigen_acurracy);
 
 
 void free_svd_result(struct usv_native* r);

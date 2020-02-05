@@ -1,12 +1,9 @@
 from distutils.core import setup, Extension
 from Cython.Build import cythonize
-import numpy
 
 
 setup(
-    name="partial_svd",
-    ext_modules=cythonize("partial_svd.pyx",
-                          include_path=[
-                              numpy.get_include(),
-                              "/usr/include/eigen3/Eigen"]),
+    name="tSVD",
+    version=" 0.1 ",
+    ext_modules=cythonize(["cylib/tSVD.pyx"]),
 )
