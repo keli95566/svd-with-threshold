@@ -1,6 +1,8 @@
 .idea
 .DS_Store
 .ipynb_checkpoints
+cylib/tSVD.cpp
+cylib/tSVD.cpython-37m-darwin.so
 dist
 tSVD.egg-info
 cmake-build-debug
