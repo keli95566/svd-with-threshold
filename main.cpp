@@ -45,7 +45,7 @@ int main() {
 
     usv_native res = power_method_with_deflation(A, num_row, num_col, 2, 0.00001);
     print_result(res);
-
+    free_svd_result(&res);
 // TODO: handle the threshold = 0 case, it won't stop calculation.
 // TODO: test the result to see if it combines to the original array
 

@@ -1,9 +1,10 @@
 # replace the location of the source file if you need to compile inplace using cythonize!
-# distutils: sources = /Users/CocoLelio/code/Algorithm_Engineering/self_svd_implementation/cylib/power_method.cpp
+# distutils: sources = cylib/power_method.cpp
 # distutils: language = c++
 # cython: language_level = 3
 # cython: boundscheck = False
 # cython: wraparound = False
+# distutils: include_dirs = EIGEN_PATH
 
 import numpy as np
 

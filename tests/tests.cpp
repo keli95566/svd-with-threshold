@@ -12,10 +12,12 @@
 using Eigen::MatrixXf;
 using Eigen::VectorXf;
 
-TEST_CASE("should use power method properly for basic operations", "[POWER]"){
+TEST_CASE("should recombine to the original matrix", "[POWER]"){
 
+    int r, c = 3,3;
+    double A[9] = {1,2,3,4,5,6,7,8,9};
+    usv_native res = power_method_with_deflation(A, 3, 3 , 0.001, 0.0001);
 
-    std::cout << "test finished" << std::endl;
 
 }
 

@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "/usr/local/include/eigen3/Eigen/Eigen"
+#include <Eigen/Dense>
 #include <math.h>
 #include <cstdlib>
 #include <vector>
