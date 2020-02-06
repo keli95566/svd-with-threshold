@@ -1,4 +1,4 @@
-from tSVD import *
+import tSVD
 import numpy as np
 import random
 
@@ -11,7 +11,7 @@ def tSVD_test1(num_case, dtype="float"):
     for j in range(num_case):
 
         print("--- case %s : random array ----" % str(j+1))
-        r, c = random.randint(0, 100), random.randint(0, 100)
+        r, c = random.randint(0, 300), random.randint(0, 300)
 
         if dtype == "float":
             a = np.random.rand(r, c)
@@ -19,9 +19,10 @@ def tSVD_test1(num_case, dtype="float"):
             a = np.random.randint(0, 1000, (r, c))
 
         a = a.astype(np.float64)
+        print("random array shape=+: ", a.shape)
 
         u1, s1, v1 = np.linalg.svd(a)
-        u, s, v = partial_svd(a, 2, 0.001)
+        u, s, v = tSVD.partial_svd(a, 2, 0.001)
 
         n_e = s.shape[0]
         u_p, s_p, v_p = u1[:, :n_e], s1[:n_e], v1[:n_e, :]
@@ -49,14 +50,13 @@ def tSVD_test1(num_case, dtype="float"):
 
                 print("case %s: precision until %s is correct" %
                       (str(a+1), str(p)))
-        #print("test case %s passed" % str(j+1))
+        print("test case %s passed" % str(j+1))
 
 
 if __name__ == "__main__":
 
     print("========== tSVD Correction Tests ===========")
 
-    num_test_case = 5
+    num_test_case = 10
     dtype = "float"
     tSVD_test1(num_test_case, dtype)
-    #tSVD_test1(num_test_case, "int")
