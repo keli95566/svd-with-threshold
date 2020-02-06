@@ -1,7 +1,7 @@
-import tSVD
 import numpy as np
 import random
 
+from cylib.tSVD import *
 
 def tSVD_test1(num_case, dtype="float"):
     #  random numbers are sampled using np.random.rand for an arbitrary shape,
@@ -22,7 +22,7 @@ def tSVD_test1(num_case, dtype="float"):
         print("random array shape=+: ", a.shape)
 
         u1, s1, v1 = np.linalg.svd(a)
-        u, s, v = tSVD.partial_svd(a, 2, 0.001)
+        u, s, v = partial_svd(a, 2, 0.001)
 
         n_e = s.shape[0]
         u_p, s_p, v_p = u1[:, :n_e], s1[:n_e], v1[:n_e, :]
